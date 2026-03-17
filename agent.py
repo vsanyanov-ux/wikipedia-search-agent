@@ -17,7 +17,7 @@ class AgentState(TypedDict):
 
 # Initialize the LLM with AI Tunnel base URL to bypass regional restrictions
 llm = ChatOpenAI(
-    model="gpt-4o", 
+    model="qwen3.5-9b", 
     temperature=0,
     base_url="https://api.aitunnel.ru/v1"
 )

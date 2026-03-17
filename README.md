@@ -5,16 +5,30 @@
 ## Архитектура
 
 Агент следует циклическому паттерну графа:
-- **Узел Агента (Agent Node)**: Использует GPT-4o (через AI Tunnel) для принятия решения: выполнить поиск или предоставить итоговый ответ.
+- **Узел Агента (Agent Node)**: Использует qwen3.5-9b (через AI Tunnel) для принятия решения: выполнить поиск или предоставить итоговый ответ.
 - **Узел Действия (Action Node)**: Выполняет поиск инструментом Wikipedia и обрабатывает исключения (`DisambiguationError`, `PageError`).
 - **Логика восстановления**: Если инструмент возвращает ошибку, она передается обратно агенту как контекст для исправления запроса.
 
 ```mermaid
 graph TD
-    Start((Начало)) --> Agent[Узел Агента <br/>GPT-4o]
-    Agent -->|Итоговый ответ| End((Конец))
-    Agent -->|Вызов инструмента| Action[Узел Действия <br/>Инструмент Wikipedia]
-    Action -->|Ошибка/Успех| Agent
+    subgraph "main.py (CLI Интерфейс)"
+        User((Пользователь)) --> Input[Запрос вопроса]
+        Input --> Run[run_query]
+    end
+
+    subgraph "agent.py (LangGraph Логика)"
+        Run --> AgentNode[Узел Агента <br/>qwen3.5-9b]
+        AgentNode -->|JSON Tool Call| ActionNode[Узел Действия]
+        ActionNode --> AgentNode
+        AgentNode -->|Финальный ответ| Run
+    end
+
+    subgraph "tools.py (Wikipedia Tool)"
+        ActionNode --> Wiki[search_wikipedia]
+        Wiki -->|Результат/Ошибка| ActionNode
+    end
+
+    Run --> Output[Вывод ответа]
 ```
 
 ## Особенности
