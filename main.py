@@ -24,11 +24,20 @@ def run_query(query: str):
                     print(f"Tool Calls: {last_msg.tool_calls}")
 
 if __name__ == "__main__":
-    # Test 1: Straightforward query
-    run_query("What is the capital of France?")
+    print("--- Wikipedia Search Agent (LangGraph + Qwen) ---")
+    print("Type 'exit' or 'quit' to stop.")
     
-    # Test 2: Query that SHOULD trigger the tool
-    run_query("Who is the CEO of Nvidia in 2024?")
+    while True:
+        try:
+            user_input = input("\nEnter your question: ").strip()
+            if user_input.lower() in ["exit", "quit"]:
+                break
+            if not user_input:
+                continue
+            run_query(user_input)
+        except KeyboardInterrupt:
+            break
+        except Exception as e:
+            print(f"Error: {e}")
     
-    # Test 3: Ambiguous query to test recovery logic
-    run_query("Tell me about the planet Mercury.")
+    print("\nGoodbye!")
