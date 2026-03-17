@@ -24,20 +24,11 @@ def run_query(query: str):
                     print(f"Tool Calls: {last_msg.tool_calls}")
 
 if __name__ == "__main__":
-    print("--- Wikipedia Search Agent (LangGraph + Qwen) ---")
-    print("Type 'exit' or 'quit' to stop.")
+    # Тест 1: Простой вопрос
+    run_query("What is the capital of France?")
     
-    while True:
-        try:
-            user_input = input("\nEnter your question: ").strip()
-            if user_input.lower() in ["exit", "quit"]:
-                break
-            if not user_input:
-                continue
-            run_query(user_input)
-        except KeyboardInterrupt:
-            break
-        except Exception as e:
-            print(f"Error: {e}")
+    # Тест 2: Запрос, который должен вызвать инструмент
+    run_query("Who is the CEO of Nvidia in 2024?")
     
-    print("\nGoodbye!")
+    # Тест 3: Неоднозначный запрос для проверки логики восстановления
+    run_query("Tell me about the planet Mercury.")
