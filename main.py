@@ -19,7 +19,7 @@ def run_query(query: str):
             if "messages" in value:
                 last_msg = value["messages"][-1]
                 if hasattr(last_msg, "content"):
-                    print(f"Content: {last_msg.content[:200]}..." if len(last_msg.content) > 200 else f"Content: {last_msg.content}")
+                    print(f"Content: {last_msg.content}")
                 if hasattr(last_msg, "tool_calls") and last_msg.tool_calls:
                     print(f"Tool Calls: {last_msg.tool_calls}")
 

@@ -23,7 +23,7 @@ def search_wikipedia(query: str) -> str:
         # Use first=True to get the most relevant page summary
         return wikipedia.summary(query, sentences=3, auto_suggest=False)
     except wikipedia.DisambiguationError as e:
-        return f"ERROR: Ambiguous query. Possible options are: {', '.join(e.options[:5])}. Please be more specific."
+        return f"ERROR: Ambiguous query. Possible options are: {', '.join(e.options[:10])}. Please be more specific."
     except wikipedia.PageError:
         return f"ERROR: Page '{query}' not found. Please check your spelling or try a more common name for this entity."
     except Exception as e:
